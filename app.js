@@ -12,7 +12,8 @@ var usersRouter = require('./routes/users');
 var app = express();
 
 // Connecta ao banco
-mongoose.connect('mongodb://localhost:27017/test',  { useNewUrlParser: true });
+//mongoose.connect('mongodb://localhost:27017/test',  { useNewUrlParser: true });
+mongoose.connect('mongodb://projeto2:projeto2@ds050087.mlab.com:50087/projetoweb',  { useNewUrlParser: true });
 
 // Tipo de templete usado
 app.set('views', path.join(__dirname, 'views'));
