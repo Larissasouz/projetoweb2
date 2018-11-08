@@ -1,0 +1,244 @@
+body {
+  font-family: "Open Sans",sans-serif;
+  color: #303942;
+  margin: 0;
+}
+
+#logo {
+  width: 236px;
+  margin-top: 26px;
+  margin-left: 30px;
+}
+
+#globe {
+  width: 30px;
+  height: 30px;
+  margin-top: -6px;
+  margin-right: -23px;
+}
+
+#navicon {
+  display: none;
+}
+
+.menuTopo {
+  height: 90px;
+}
+
+.menuTopo ul{
+  list-style: none;
+  float: right;
+}
+
+.menuTopo li {
+  float: left;
+  margin-right: 40px;
+  margin-top: 20px;
+}
+
+.menu-link {
+list-style: none;
+float: left;
+}
+
+.menu-link li {
+margin-top: 17px;
+position: relative;
+float: left;
+}
+
+.menu-link li a {
+  text-decoration: none;
+  color: #303942;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 8px;
+  margin-left: -5px;
+  display: inline-block;
+  margin-top: -8px;
+}
+
+.menu-link li ul{
+  position: absolute;
+  margin-top: 0px;
+  background-color: #fff;
+  display: none;
+  z-index: 4;
+}
+
+.menu-link li ul li a{
+font-weight: normal;
+padding: 3px;
+}
+
+.menu-link li:hover ul, .menu-link li.over ul{
+  margin-left: -20px;
+  width: 155px;
+  height: 175px;
+  display: block;
+}
+
+.menu-link li ul li{
+  margin-left: -15px;
+  display: inline-block;
+  width: 180px;
+}
+
+.dropdown {
+  background-color: #fff;
+  display: list-item;
+}
+
+.menuBase li {
+  float: left;
+  padding-top: 145px;
+  font-size: 15px;
+  padding-right: 70px;
+}
+
+.menuBase li a {
+  text-decoration: none;
+  color: rgb(168, 164, 164);
+}
+
+.bannerMeio img {
+  height: 500px;
+  width: 100%;
+  z-index: 1;
+  position: absolute;
+  filter: contrast(30%);
+  filter: brightness(45%);
+  margin-top: -200px;
+}
+
+img.ca {
+  opacity:0.85;
+  -moz-opacity: 0.85;
+  filter: alpha(opacity=85);
+}
+
+h1 {
+  color:#f90;
+  font-size: 30px;
+  font-weight: 100;
+  text-align: center;
+  margin-top: 0;
+  z-index: 2;
+  position: relative;
+  padding-top: 140px;
+}
+
+.banner-title-1 {
+  color: white;
+  font-size: 15px;
+  font-weight: 100;
+  position: relative;
+  text-align: center;
+  z-index: 2;
+  margin-top: -7px;
+
+}
+
+.blue-button {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  height: 30px;
+  width: 160px;
+  background-color: #0097D6;
+  font-size: 21px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: 60px;
+  margin-left: 400px;
+  padding-top: 10px;
+}
+
+.blue-button a {
+  text-decoration: none;
+  color: white;
+}
+
+.orange-button a {
+  text-decoration: none;
+  color: white;
+}
+
+.orange-button {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  height: 30px;
+  width: 345px;
+  background-color: #f90;
+  color: white;
+  font-size: 21px;
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  margin-top: -40px;
+  margin-left: 560px;
+  padding-top: 10px;
+}
+
+.orange-button img {
+  z-index: 3;
+  height: 17px;
+  width: 17px;
+  position: relative;
+  padding-left: 10px;
+  filter: none;
+}
+
+.banner-title-2 {
+  color: white;
+  font-size: 15px;
+  font-weight: 100;
+  position: relative;
+  text-align: center;
+  z-index: 2;
+  margin-left: 50px;
+
+}
+
+.menuBase ul{
+  list-style: none;
+  position: relative;
+  float:right;
+  margin-right: 200px;
+
+
+}
+
+.textBase h2 {
+  position: relative;
+  text-align: center;
+  z-index: 2;
+  color: #f90;
+  font-size: 31px;
+  font-weight: lighter;
+  padding-top: 230px;
+}
+
+.textBase p {
+  text-align: center;
+  padding-left: 200px;
+  padding-right: 200px;
+  line-height: 22px;
+}
+
+/**/
+
+.menuDropdown li ul {
+  padding: 0px;
+  margin: 0px;
+  background-color: #EDEDED;
+  list-style: none;
+  z-index: 4;
+}
+.menuDropdown ul li {
+display: inline;
+}
