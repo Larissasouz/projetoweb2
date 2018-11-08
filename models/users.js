@@ -1,4 +1,4 @@
-var url = 'mongodb://localhost:27017/test';
+var url = 'mongodb://projeto2:projeto2@ds050087.mlab.com:50087/projetoweb';
 
 let user  = require('mongodb').MongoClient;
 
