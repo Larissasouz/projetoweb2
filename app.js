@@ -3,7 +3,7 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-const mongoose  = require('mongodb').MongoClient;
+//const mongoose  = require('mongodb').MongoClient;
 
 //Carregando as rotas
 var indexRouter = require('./routes/index');
@@ -13,7 +13,7 @@ var app = express();
 
 // Connecta ao banco
 //mongoose.connect('mongodb://localhost:27017/test',  { useNewUrlParser: true });
-mongoose.connect('mongodb://projeto2:projeto2@ds050087.mlab.com:50087/projetoweb',  { useNewUrlParser: true });
+//mongoose.connect('mongodb://projeto2:projeto2@ds050087.mlab.com:50087/projetoweb',  { useNewUrlParser: true });
 
 // Tipo de templete usado
 app.set('views', path.join(__dirname, 'views'));
