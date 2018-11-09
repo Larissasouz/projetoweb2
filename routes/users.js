@@ -13,6 +13,13 @@ router.get('/login', function(req, res, next) {
   res.render('login');
 });
 
+router.get('/logout', function(req, res, next){
+  if(req.cookies && req.cookies.nome){
+    res.clearCookie('nome', {path:'/'});
+  }
+  res.redirect('/');
+});
+
 router.get('/cadastro', function(req, res, next) {
   res.render('cadastro');
 });

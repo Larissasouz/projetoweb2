@@ -8,28 +8,28 @@ module.exports = class publicacaoFunc {
     static find() {
         return conexao.then((user) => {
                 let db = user.db('projetoweb');
-                return db.collection('publications').find().toArray();
+                return db.collection('publicacao').find().toArray();
             }).catch((err) => {throw err; });
     }
 
-    static insert(login, titulo, descricao) {
+    static insert(nome, titulo) {
         return conexao.then((user) => {
                 let db = user.db('projetoweb');
-                db.collection('publications').insertOne({'login':login, 'titulo':titulo, 'descricao':descricao});
+                db.collection('publicacao').insertOne({'nome':nome, 'titulo':titulo});
             }).catch((err) => {throw err; });
     }
 
-    static findByLogin(login){
+    static findByLogin(nome){
         return conexao.then((user) => {
                 let db = user.db('projetoweb');
-                return db.collection('publications').find({'login':login}).toArray();
+                return db.collection('publicacao').find({'nome':nome}).toArray();
             }).catch((err) => {throw err; });
     }
 
-    static findBySearch(keyWord){
+    static findBySearch(busca){
         return conexao.then((user) => {
                 let db = user.db('projetoweb');
-                return db.collection('publications').find({'titulo': { "$regex": keyWord, "$options": "i" }}).toArray();
+                return db.collection('publicacao').find({'titulo': { "$regex": busca, "$options": "i" }}).toArray();
             }).catch((err) => {throw err; });
     }
 
