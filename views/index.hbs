@@ -8,8 +8,19 @@
         <!--Imagem da aba do navegador-->
         <link rel="shortcut icon" type="image/x-icon" href="images/amazon.ico" />
         <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+        <!--Cor das mensagens-->
+        <style type="text/css" media="screen">
+            .aviso { color: orange; }
+            .sucesso { color: green; }
+            .erro { color: red; }
+        </style>
+
     </head>
     <body>
+
+        <!--Mensagem de erro-->
+        <span id="mensagens" class=""></span>
+
         <div class="menuTopo">
             <nav>
                 <button id="navicon"><img src="images/navicon.png"/></button>
@@ -72,6 +83,40 @@
             <h3>{{titulo}}</h3>
             <img src="images/{{titulo}}image.jpg" class="publicada"/>   
         </div>
-        {{/each}}            
+        {{/each}}
+
+        <!--Mensagens-->
+        <script type="text/javascript" charset="utf-8">
+        
+            var mensagens = document.querySelector("#mensagens");
+            document.querySelector("input").addEventListener("keyup", function (ev) {
+                if (ev.keyCode != 13)
+                    return ;
+                var xhr = new XMLHttpRequest(),
+                    self = this;
+                xhr.open("POST", "busca", true);
+                xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState < 4) {
+                        mensagens.innerHTML = "carregando...";
+                        mensagens.className = "aviso";
+                    }
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        mensagens.innerHTML = "sucesso.";
+                        mensagens.className = "sucesso";
+                        self.value = "";
+
+                    }
+                    if (xhr.readyState === 4 && xhr.status != 200) {
+                        mensagens.innerHTML = "erro";
+                        mensagens.className = "erro";
+                    }
+                };
+                //Pra onde vai essa mensagem
+                xhr.send("nome=" + this.value);
+            });
+            
+        </script>
+
     </body>
 </html>

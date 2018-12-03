@@ -29,6 +29,8 @@ router.post('/cadastro', function(req, res, next){
   var nome = req.body.nome;
   var senha = req.body.senha;
   var email = req.body.email;
+  var endereco = req.body.endereco;
+
   if(!nome || !senha || !email){
     res.send('Todos os campos devem ser preenchidos')
     res.end();
@@ -55,28 +57,32 @@ router.post('/cadastro', function(req, res, next){
             res.send('Email inválido!');
           }
           else {
-            userFunc.findByLogin(nome).then((user) =>{
-              if(user[0]){
-                res.send('Esse usuário já esta cadastrado no sistema!');
-                res.redirect('/users/cadastro');
-                res.end();
-                return;
-              }
-              userFunc.findByEmail(email).then((user)=>{
+            if (endereco.legnth < 3) {
+              res.send('Endereco inválido!');
+            } else {
+              userFunc.findByLogin(nome).then((user) =>{
                 if(user[0]){
-                  res.send('Esse email já esta cadastrado no sistema!');
+                  res.send('Esse usuário já esta cadastrado no sistema!');
+                  res.redirect('/users/cadastro');
                   res.end();
-                  return 0;
-                }else{
-                  return 1;
+                  return;
                 }
-              }).then((v)=>{
-                if(v===1){
-                  userFunc.insert(nome, senha, email);
-                  res.redirect('/');
-                }
+                userFunc.findByEmail(email).then((user)=>{
+                  if(user[0]){
+                    res.send('Esse email já esta cadastrado no sistema!');
+                    res.end();
+                    return 0;
+                  }else{
+                    return 1;
+                  }
+                }).then((v)=>{
+                  if(v===1){
+                    userFunc.insert(nome, senha, email, endereco);
+                    res.redirect('/');
+                  }
+                });
               });
-            });
+            }
           }          
         }
       }

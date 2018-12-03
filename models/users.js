@@ -12,10 +12,10 @@ module.exports = class userFunc {
             }).catch((err) => {throw err; });
     }
 
-    static insert(nome, senha, email) {
+    static insert(nome, senha, email, endereco) {
         return conexao.then((user) => {
                 let db = user.db('projetoweb');
-                db.collection('users').insertOne({'nome':nome, 'senha':senha, 'email':email });
+                db.collection('users').insertOne({'nome':nome, 'senha':senha, 'email':email, 'endereco':endereco });
             }).catch((err) => {throw err; });
     }
 

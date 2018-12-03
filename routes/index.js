@@ -19,7 +19,7 @@ router.get('/publi', function(req, res, next){
   }
 });
 
-router.post('/busca', function(req, res, next){
+router.get('/busca', function(req, res, next){
   var busca = req.body.busca;
   console.log(busca);
 
@@ -29,23 +29,39 @@ router.post('/busca', function(req, res, next){
 }); 
 
 router.post('/publi', function(req, res, next){
-  var login = req.cookies.login;
+  var nome = req.cookies.nome;
   var form = formidable.IncomingForm();
 
-  form.parse(req, function(err, fields, files){
-    var titulo = fields.titulo;
-    
-    publicacaoFunc.insert(login, titulo);
-    var imaganterior = files.image.path;
-    var imagnova = './public/images/'+titulo+'image.jpg';
-
-    fs.rename(imaganterior, imagnova, function (err) {
-      if (err) throw err;
-      console.log('Imagem adicionada!');
-    });
-    console.log('OK');
-    res.redirect('/')
+  userFunc.findByLogin(nome).then((user) => {
+    if(user[0]) {
+      if(user[0].senha === senha) {
+        form.parse(req, function(err, fields, files){
+          var titulo = fields.titulo;
+          
+          publicacaoFunc.insert(login, titulo);
+          var imaganterior = files.image.path;
+          var imagnova = './public/images/'+titulo+'image.jpg';
+      
+          fs.rename(imaganterior, imagnova, function (err) {
+            if (err) throw err;
+            console.log('Imagem adicionada!');
+          });
+          console.log('OK');
+          res.redirect('/')
+        });
+      } else {
+        res.status(403);
+        res.send('Senha inválida!');
+        res.end();
+      }
+    } else {
+      res.status(403);
+      res.send('Login inválido!');
+      res.end();
+    }
   });
+
+  
 });
 
 module.exports = router;
