@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Pagina de Usuários</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheets" type="text/css" href="style.css" />
+    <script src="https://www.gstatic.com/firebasejs/5.6.0/firebase.js"></script>
+    <script>
+        // Initialize Firebase
+        var config = {
+            apiKey: "AIzaSyC0pPFpb9lr5TJlVZdGjVdU0g0LIVqjLv8",
+            authDomain: "projetoweb-aca58.firebaseapp.com",
+            databaseURL: "https://projetoweb-aca58.firebaseio.com",
+            projectId: "projetoweb-aca58",
+            storageBucket: "projetoweb-aca58.appspot.com",
+            messagingSenderId: "960383007499"
+        };
+
+        firebase.initializeApp(config);
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(() => {
+
+            const database = firebase.database();
+
+            $('#buscarUsuario').click(function(evento) {
+                const nome = $('#nomeBusca').val();
+                const key = '/users/usuarios/' + nome;
+                //console.log(key);
+                database.ref(key).once("value").then(function (snapshot) {
+                    const data = snapshot.val();
+                    //console.log(data);
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/users/usuarios/",
+                        beforeSend: function () {
+                            $("#carregando").css("display", "inline");
+                        },
+                        complete: function () {
+                            $("#carregando").css("display", "none");
+                        },
+                        success: function (result) {
+                            evento.preventDefault();
+                            // Verificando se o campo esta vazio
+                            if (nome){
+                                // Verificando se tem o usuario procurado
+                                if (data) {
+                                    $('#mensagem').css("display", "inline").html('Usuário encontrado!');
+                                    $("#status").css("display", "inline").html("Sucesso!");
+                                } else {
+                                    $('#mensagem').css("display", "inline").html('Não existe esse usuário!');
+                                    $("#status").css("display", "inline").html("Erro!");
+                                }
+                            } else {
+                                $('#mensagem').css("display", "inline").html('Busca invalida! Campo vazio.');
+                                $("#status").css("display", "inline").html("Erro!");
+                            }
+                        },
+                        error: function (result) {
+                            $("#status").css("display", "inline").html("Erro!");
+                        }
+                    });
+                });       
+            });
+
+            $('#buscarTodos').click(function (evento) {
+                database.ref('/users/usuarios/').once("value").then(function (snapshot) {
+                    const data = snapshot.val();
+                    //console.log('Usuarios:', data);
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/users/usuarios/",
+                        beforeSend: function () {
+                            $("#carregando").css("display", "inline");
+                        },
+                        complete: function () {
+                            $("#carregando").css("display", "none");
+                        },
+                        success: function (result) {
+                            evento.preventDefault();
+                            if (data) {
+                                $('#mensagem').css("display", "inline").html('Usuarios: ' + Object.keys(data));
+                                $("#status").css("display", "inline").html("Sucesso!");
+                            } else {
+                                $('#mensagem').css("display", "inline").html('Não existe usuários cadastrados!');
+                                $("#status").css("display", "inline").html("Erro!");
+                            }
+                        },
+                        error: function (result) {
+                            $("#carregando").css("display", "inline");
+                            $("#status").css("display", "inline").html("Erro!");
+                        }
+                    });
+                });     
+            });
+
+            $('#deletarBanco').click(function (evento) {
+                console.log('Banco deletado com sucesso!');
+                database.ref('/users/usuarios/').remove();
+
+                $.ajax({
+                        type: "GET",
+                        url: "/users/usuarios/",
+                        beforeSend: function () {
+                            $("#carregando").css("display", "inline");
+                        },
+                        complete: function () {
+                            $("#carregando").css("display", "none");
+                        },
+                        success: function (result) {
+                            $("#carregando").css("display", "inline");
+                           $('#mensagem').css("display", "inline").html('Banco deletado com sucesso!');
+                              $("#status").css("display", "inline").html("Sucesso!");
+                        },
+                        error: function (result) {
+                            $("#carregando").css("display", "inline");
+                            $("#status").css("display", "inline").html("Erro!");
+                        }
+                    });
+            });
+
+            $('#inserirUsuario').click(function (evento) {
+                const nome = $('#inserirNome').val();
+                const email = $('#inserirEmail').val();
+                const key = '/users/usuarios/' + nome;    
+                //console.log(key);
+                database.ref(key).once("value").then(function (snapshot) {
+                    const data = snapshot.val();
+                    //console.log(data);
+                    $.ajax({
+                        type: "POST",
+                        url: "/users/usuarios/",
+                        beforeSend: function () {
+                            $("#carregando").css("display", "inline");
+                        },
+                        complete: function () {
+                            $("#carregando").css("display", "none");
+                        },
+                        success: function (result) {
+                            evento.preventDefault();
+                            if (!data) {
+                                database.ref('/users/usuarios/' + nome).set({ email: email });
+                                //console.log('Usuario inserido com sucesso!');
+                                $('#mensagem').css("display", "inline").html('Usuario ' + nome + ' inserido com sucesso!');
+                                $("#status").css("display", "inline").html("Sucesso!");
+                            } else {
+                                $('#mensagem').css("display", "inline").html('Já existe esse usuário!');
+                                $("#status").css("display", "inline").html("Erro!");
+                            }
+                        },
+                        error: function (result) {
+                            $("#carregando").css("display", "inline");
+                            $("#status").css("display", "inline").html("Erro!");
+                        }
+                    });  
+                });
+            });
+
+            $('#excluirUsuario').click(function (evento) {
+                const nome = $('#excluirnome').val();
+                const key = '/users/usuarios/' + nome;
+                console.log(key);
+                database.ref(key).once("value").then(function (snapshot) {
+                    const data = snapshot.val();
+                    //console.log(data);
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/users/usuarios/",
+                        beforeSend: function () {
+                            $("#carregando").css("display", "inline");
+                        },
+                        complete: function () {
+                            $("#carregando").css("display", "none");
+                        },
+                        success: function (result) {
+                            evento.preventDefault();
+                            if (data) {
+                                database.ref('/users/usuarios/' + nome).remove();
+                                //console.log('Usuario excluido com sucesso!');
+                                $('#mensagem').css("display", "inline").html('Usuario ' + nome + ' excluido com sucesso!');
+                                $("#status").css("display", "inline").html("Sucesso!");
+                            } else {
+                                $('#mensagem').css("display", "inline").html('Não existe esse usuário!');
+                                $("#status").css("display", "inline").html("Erro!");
+                            }
+                        },
+                        error: function (result) {
+                            $("#carregando").css("display", "inline");
+                            $("#status").css("display", "inline").html("Erro!");
+                        }
+                    });
+                    
+                });
+
+            });
+  
+            $('.nomeLista li').each(function () {
+                $(this).attr('data-search-term', $(this).text().toLowerCase());
+            });
+
+            $('.nomeBusca').on('keyup', function () {
+                var searchTerm = $(this).val().toLowerCase();
+                $('.nomeLista li').each(function () {
+                    if ($(this).filter('[data-search-term *= ' + searchTerm + ']').length > 0 || searchTerm.length < 1) {
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+                $.ajax({
+                        type: "GET",
+                        url: "/users/usuarios/",
+                        beforeSend: function () {
+                            $("#carregando").css("display", "inline");
+                        },
+                        complete: function () {
+                            $("#carregando").css("display", "none");
+                        },
+                        error: function (result) {
+                            $("#carregando").css("display", "inline");
+                            $("#status").css("display", "inline").html("Erro!");
+                        }
+                    });
+            });
+            // Recarregar pagina
+            function fetchdata() {
+                $.ajax({
+                    url: '/users/buscarUsuarios',
+                    type: 'post',
+                    beforeSend: function () {
+                        $('#mensagem').css("display", "inline").html('Recarregando pagina!');
+                    },
+                    success: function (data) {
+                        // Perform operation on return value
+                        alert(data);
+                        $('#mensagem').css("display", "inline").html('Recarregando pagina!');
+                    },
+                    complete: function (data) {
+                        setTimeout(fetchdata, 5000);
+                        $("#status").css("display", "none");
+                        $('#mensagem').css("display", "inline").html('Pagina recarregada!');
+                    }
+                });
+            }
+            setTimeout(fetchdata,5000);
+
+            // Lida com os erros em geral
+            $(document).ajaxError(() => {
+                $('#mensagem').css("display", "inline").html('Erro geral!');
+            })
+        });
+    </script>
+
+</head>
+
+<body>
+    <br />
+    <div>Nome:
+        <input type="text" id="nomeBusca" value="">
+        <button id="buscarUsuario">Buscar</button><br><br />
+    
+    </div>
+    
+    <button id="buscarTodos">Buscar todos usuários</button>
+    
+    <button id="deletarBanco">Deletar banco</button><br>
+    
+    <div>_________________________________________________</div><br>
+    
+    <div>Excluir usuário:</div><br>
+    <div>Nome:
+        <input type="text" id="excluirnome" value="">
+        <button id="excluirUsuario">Excluir</button><br><br>
+    </div>
+    
+    <div>_________________________________________________</div><br>
+    
+    <div>Inserir usuário:</div><br>
+    <div>Nome:
+        <input type="text" id="inserirNome" value=""><br>
+    </div>
+    <div>Email:
+        <input type="text" id="inserirEmail" value="">
+        <button id="inserirUsuario">Inserir</button><br>
+    </div>
+    
+    <div>_________________________________________________</div><br>
+
+    <div>Mensagens:
+        <div id="mensagem"></div>
+    </div><br>
+    
+    <div>Status:
+        <div id="carregando" style="display: none; color: green;">Carregando...</div>
+        <div id="status" style="display: none; color: blue;"></div><br>
+    </div>
+    
+
+    <div>_________________________________________________</div><br>
+
+    <div>Nome de Usuario:</div>
+    <br>
+    <input type="text" class="nomeBusca" autocomplete="off" placeholder="Busca" />
+
+    <ul class="nomeLista">
+        <li>Ana</li>
+        <li>Carlos</li>
+        <li>Joao</li>
+        <li>Julia</li>
+        <li>Anderson</li>
+        <li>Carmila</li>
+        <li>José</li>
+        <li>Juliana</li>
+    </ul>
+        
+    <!--
+    <script>
+        var template = document.getElementById("template-list-item");
+        var templateHtml = template.innerHTML;
+
+        // Ajax Call
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == XMLHttpRequest.DONE) {
+                // On success
+                if (xhr.state == 200) {
+                    // Convert JSON string response to an Object
+                    var dataObject = JSON.parse(xhr.responseText);
+
+                    document.getElementById("list").innerHTML = listCreateHtml(dataObject);
+                }
+            }
+        }
+
+        xhr.open("GET", "/users/buscarUsuarios", true);
+        xhr.send();
+
+        // Function to generate and returns the HTML.
+        // Accepts an object as a parameter
+        function listCreateHtml(dataObject) {
+            var listHtml = "";
+
+            for (key in dataObject) {\
+                listHtml += templateHtml.replace(/{{name}}/g, dataObject[key]["name"])
+            }
+
+            return listHtml;
+        }
+    </script> -->
+
+    <ul id="container"></ul>
+    <script type="text/javascript" charset="utf-8">
+        var container = document.querySelector("#container");
+        document.querySelector("input")
+            .addEventListener("keyup", function () {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.open("GET", "/users/usuarios/" + this.value, true);
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState === 4 && xmlhttp.status === 200) {
+                        var usuarios = xmlhttp.responseText.split(',');
+                        container.innerHTML = "";
+                    } else {
+                        if (xmlhttp.readyState < 3){
+                            $("#carregando").css("display", "inline");
+                        }
+                    }
+                };                
+                xmlhttp.send();
+            });
+    </script>
+
+</body>
+
+</html>
