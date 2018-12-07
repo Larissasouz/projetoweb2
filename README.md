@@ -1,7 +1,8 @@
 # projetoweb2
 Dicas
 
-GIT
+
+***GIT***
 
 git init
 
@@ -14,7 +15,9 @@ git remote add origin https://github.com/Larissasouz/projetoweb2.git
 git push -u origin master
 
 
-Atualizar projeto no GIT
+
+
+***Atualizar projeto no GIT***
 
 git status (vai aparecer a modificação)
 
